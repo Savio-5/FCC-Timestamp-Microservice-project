@@ -23,22 +23,31 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.get("/api/:YMD", (req, res) => {
-  const timestamp = req.params.YMD
-  const date = new Date(timestamp)
+app.get("/api", function (req, res) {
+  const date = new Date();
 
-  if(date.getTime() > 0){
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString(),
+  });
+});
+
+app.get("/api/:YMD", (req, res) => {
+  const timestamp = req.params.YMD;
+  const date = new Date(timestamp);
+
+  if (date.getTime() > 0) {
     res.json({
       unix: date.getTime(),
-      utc: date.toUTCString()
+      utc: date.toUTCString(),
     });
-  }else if(date.toDateString() && (/^\d+$/).test(timestamp)){
-    let date = new Date(parseInt(timestamp))
+  } else if (date.toDateString() && /^\d+$/.test(timestamp)) {
+    let date = new Date(parseInt(timestamp));
     res.json({
       unix: date.getTime(),
-      utc: date.toUTCString()
+      utc: date.toUTCString(),
     });
-  }else{
+  } else {
     res.json({ error: "Invalid Date" });
   }
 });
